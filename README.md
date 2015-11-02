@@ -16,4 +16,4 @@ TODO
 
 ## Licence
 
-MIT: http://kitak.mit-licence.org
+MIT: http://kitak.mit-license.org
