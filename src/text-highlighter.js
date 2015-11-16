@@ -1,6 +1,12 @@
 class TextHighlighter {
-  constructor(selector) {
-    this.elements = document.querySelectorAll(selector);
+  constructor(selector, baseElement = document) {
+    this.elements = baseElement.querySelectorAll(selector);
+    this.elements.foreach((element) => {
+      console.assert(element.childNodes.length === 1 && element.childNodes[0].nodeType === Node.TEXT_NODE);
+    });
+    this.elements.foreach((element) => {
+      element.dataset.originalText = element.innerText;
+    });
   }
 
   escapeHtmlSpecialCharactor(str) {
@@ -12,39 +18,32 @@ class TextHighlighter {
   }
 
   escapeRegExpMetaCharactor(str) {
-    return str.replace(/\^/g, '\^')
-              .replace(/\$/g, '\$')
-              .replace(/\$/g, '\$')
-              .replace(/\*/g, '\*')
-              .replace(/\+/g, '\+')
-              .replace(/\?/g, '\?')
-              .replace(/\./g, '\.')
-              .replace(/\(/g, '\(')
-              .replace(/\)/g, '\)')
-              .replace(/\:/g, '\:')
-              .replace(/\|/g, '\|')
-              .replace(/\{/g, '\{')
-              .replace(/\}/g, '\}')
-              .replace(/\[/g, '\[')
-              .replace(/\]/g, '\]')
-              .replace(/\\/g, '\\');
+    return str.replace(/\\/g, '\\\\')
+              .replace(/\^/g, '\\\^')
+              .replace(/\$/g, '\\\$')
+              .replace(/\$/g, '\\\$')
+              .replace(/\*/g, '\\\*')
+              .replace(/\+/g, '\\\+')
+              .replace(/\?/g, '\\\?')
+              .replace(/\./g, '\\\.')
+              .replace(/\(/g, '\\\(')
+              .replace(/\)/g, '\\\)')
+              .replace(/\:/g, '\\\:')
+              .replace(/\|/g, '\\\|')
+              .replace(/\{/g, '\\\{')
+              .replace(/\}/g, '\\\}')
+              .replace(/\[/g, '\\\[')
+              .replace(/\]/g, '\\\]');
   }
 
   highlight(highlightText) {
-    if (highlightText == null) {
-      return;
-    }
+    console.assert(typeof(highlightText) === "string");
     let re = new RegExp("("+escapeRegExpMetaCharactor(highlightText)+")", 'ig');
 
     this.elements.foreach((element) => {
-      let originaltext = '';
+      let originalText = element.dataset.originalText;
       let splitted = [];
       let html = '';
-
-      if (element.dataset.originalText == null) {
-        element.dataset.originalText = element.innerText;
-      }
-      originalText = element.dataset.originalText;
 
       if (highlightText === '') {
         element.innerHTML = escapeHtmlSpecialCharactor(originalText);
@@ -62,7 +61,6 @@ class TextHighlighter {
         console.assert(splitted.length-1 === i);
         html += splitted[i];
       } else {
-        console.assert(splitted.length === 1);
         html = splitted[0];
       }
       element.innerHTML = html;
