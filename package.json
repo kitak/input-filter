@@ -1,0 +1,20 @@
+{
+  "name": "text-highlighter",
+  "version": "0.0.1",
+  "description": "TODO",
+  "main": "dist/text-highlighter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kitak/text-highlighter.git"
+  },
+  "author": "Keisuke KITA",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kitak/text-highlighter/issues"
+  },
+  "files:" ["lib"],
+  "homepage": "https://github.com/kitak/text-highlighter#readme"
+}
