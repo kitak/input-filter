@@ -1,8 +1,8 @@
-var assert = require('power-assert');
+const assert = require('power-assert');
 
-describe('TextHighlighter', function() {
-  describe('#highlight', function() {
-    it('', function() {
+describe('TextHighlighter', () => {
+  describe('#highlight', () => {
+    it('', () => {
       assert.equal(1+1, 2);
     });
   });
