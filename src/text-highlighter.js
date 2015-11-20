@@ -1,11 +1,15 @@
+import assert from 'power-assert';
+
+const forEach = Array.prototype.forEach;
+
 class TextHighlighter {
   constructor(selector, baseElement = document) {
     this.elements = baseElement.querySelectorAll(selector);
-    this.elements.foreach((element) => {
-      console.assert(element.childNodes.length === 1 && element.childNodes[0].nodeType === Node.TEXT_NODE);
-    });
-    this.elements.foreach((element) => {
-      element.dataset.originalText = element.innerText;
+    forEach.call(this.elements, (element) => {
+      assert.equal(element.childNodes.length, 1)
+      assert.equal(element.childNodes[0].nodeType, 3);
+
+      element.setAttribute("data-original-text", element.innerText);
     });
   }
 
@@ -37,21 +41,21 @@ class TextHighlighter {
   }
 
   highlight(highlightText) {
-    console.assert(typeof(highlightText) === "string");
-    let re = new RegExp("("+escapeRegExpMetaCharactor(highlightText)+")", 'ig');
+    assert.equal(typeof(highlightText), "string");
+    let re = new RegExp("("+this.escapeRegExpMetaCharactor(highlightText)+")", 'ig');
 
-    this.elements.foreach((element) => {
-      let originalText = element.dataset.originalText;
+    forEach.call(this.elements, (element) => {
+      let originalText = element.getAttribute("data-original-text");
       let splitted = [];
       let html = '';
 
       if (highlightText === '') {
-        element.innerHTML = escapeHtmlSpecialCharactor(originalText);
+        element.innerHTML = this.escapeHtmlSpecialCharactor(originalText);
         return;
       }
 
       splitted = originalText.split(re).map((token) => {
-        return escapeHtmlSpecialCharactor(token);
+        return this.escapeHtmlSpecialCharactor(token);
       });
       if (splitted.length > 1) {
         let i;
@@ -72,4 +76,4 @@ class TextHighlighter {
   }
 }
 
-module.exports = TextHighlighter;
+export default TextHighlighter
